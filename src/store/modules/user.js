@@ -1,5 +1,6 @@
 import Vue from "vue";
 import qs from "querystring";
+const client_id = "http://csro.net.com";
 
 export default {
   state: {
@@ -15,51 +16,50 @@ export default {
     }
   },
   actions: {
-    LOGIN({ commit }, payload) {
-      return new Promise(resolve => {
-        window.console.log(payload);
-        Vue.axios
-          .post("auth/login_flow", {
-            client_id: "http://192.168.2.2:8123/",
-            handler: ["homeassistant", null],
-            redirect_uri: "http://192.168.2.2:8123/?auth_callback=1"
-          })
-          .then(response => {
-            console.log(response);
-            console.log(response.flow_id);
-            Vue.axios
-              .post("auth/login_flow/" + response.data.flow_id, {
-                username: "csro",
-                password: "csro@2020",
-                client_id: "http://192.168.2.2:8123/"
-              })
-              .then(response => {
-                window.console.log(response);
-                Vue.axios({
-                  method: "post",
-                  url: "auth/token",
-                  data: qs.stringify({
-                    client_id: "http://192.168.2.2:8123/",
-                    code: response.data.result,
-                    grant_type: "authorization_code"
-                  })
-                }).then(response => {
-                  console.log(response);
-                });
-              });
-          })
-          .catch(error => {
-            console.log(error);
-          });
-
-        resolve(true);
-        commit("LOGIN_CHANGE", true);
-      });
+    async USER_LOGIN({ commit }, user) {
+      console.log(user);
+      try {
+        const flow_id = await Vue.axios.post("auth/login_flow", {
+          client_id: client_id,
+          handler: ["homeassistant", null],
+          redirect_uri: client_id + "?auth_callback=1"
+        });
+        const code = await Vue.axios.post(
+          "auth/login_flow/" + flow_id.data.flow_id,
+          {
+            username: user.username,
+            password: user.password,
+            client_id: client_id
+          }
+        );
+        if (code.data.errors != null) {
+          return Promise.reject(code.data.errors);
+        } else {
+          const token = await Vue.axios.post(
+            "auth/token",
+            qs.stringify({
+              client_id: client_id,
+              code: code.data.result,
+              grant_type: "authorization_code"
+            })
+          );
+          commit("USER_SAVE_TOKEN", { user: user, token: token.data });
+          return Promise.resolve(true);
+        }
+      } catch (error) {
+        return Promise.reject(error);
+      }
     }
   },
   mutations: {
-    LOGIN_CHANGE({ state }, value) {
-      state.login = value;
+    USER_SAVE_TOKEN(state, value) {
+      console.log(state);
+      console.log(value);
+      state.name = value.user.username;
+      state.login = true;
+      state.token = value.token.access_token;
+      state.expire = new Date().getTime() + value.token.expires_in * 1000;
+      state.refresh_token = value.token.refresh_token;
     }
   }
 };

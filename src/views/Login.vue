@@ -1,5 +1,61 @@
 <template>
-  <div class="main">
+  <v-img src="../assets/image/login/background.png" height="100%" width="100%">
+    <v-container fluid fill-height>
+      <v-row
+        class="fill-height ma-0"
+        align="center"
+        justify-sm="center"
+        justify-md="center"
+        justify-lg="end"
+      >
+        <v-col cols="12" xs="12" sm="8" md="4" lg="3">
+          <v-card class="elevation-12">
+            <v-toolbar color="#00abbe" flat d-flex>
+              <!-- <v-img contain src="../assets/image/login/logo.png" width="30%" /> -->
+              <v-icon color="white">mdi-home</v-icon>
+              <v-card-text class="headline font-weight-normal text-center white--text">壹品慧居</v-card-text>
+            </v-toolbar>
+            <v-card-text>
+              <v-form v-model="valid">
+                <v-text-field
+                  v-model="username"
+                  label="Username"
+                  name="uasename"
+                  prepend-inner-icon="mdi-account-circle"
+                  type="text"
+                  :rules="nameRules"
+                />
+
+                <v-text-field
+                  v-model="password"
+                  label="Password"
+                  name="password"
+                  prepend-inner-icon="mdi-lock"
+                  :rules="passRules"
+                  type="password"
+                />
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                :disabled="!valid"
+                block
+                color="#00abbe"
+                class="white--text"
+                @click="login"
+              >Login</v-btn>
+              <v-overlay :value="overlay">
+                <v-progress-circular indeterminate size="64"></v-progress-circular>
+              </v-overlay>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+        <v-col md="0" lg="1" class="hidden-md-and-down"></v-col>
+      </v-row>
+    </v-container>
+  </v-img>
+
+  <!-- <div class="login_page" style="height:100%; width:100%">
     <v-alert type="error" v-if="showAlert">账号或密码错误</v-alert>
     <v-row style="height: 100%">
       <v-col xs="0" sm="0" md="0" lg="6" xl="6" style="padding: 0"></v-col>
@@ -8,7 +64,6 @@
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-container class="form_title">
               <img src="../assets/image/login/logo.png" alt />
-              <!--                            CSRO 壹品慧居-->
             </v-container>
             <v-container class="form_input_item">
               <v-icon :color="color" style="margin-right: 8px">mdi-account-circle</v-icon>
@@ -44,7 +99,7 @@
         </div>
       </v-col>
     </v-row>
-  </div>
+  </div>-->
 </template>
 
 <script>
@@ -54,13 +109,16 @@ export default {
     return {
       color: "#00aebc",
       valid: true,
-      name: "demo",
-      nameRules: [
-        v => !!v || "请您输入用户名",
-        v => (v && v.length <= 10) || "Name must be less than 10 characters"
-      ],
-      password: "ddeemmoo",
+      // nameRules: [
+      //   v => !!v || "请您输入用户名",
+      //   v => (v && v.length <= 10) || "Name must be less than 10 characters"
+      // ],
+      username: "",
+      password: "",
       show1: false,
+      nameRules: [value => !!value || "Required."],
+      passRules: [v => v.length >= 8 || "Min 8 characters"],
+
       rules: {
         required: value => !!value || "Required.",
         min: v => v.length >= 8 || "Min 8 characters"
@@ -78,11 +136,20 @@ export default {
 
   methods: {
     login() {
-      window.console.log("login");
-      this.$store.dispatch("LOGIN", {
-        username: this.name,
-        password: this.password
-      });
+      this.overlay = true;
+      this.$store
+        .dispatch("USER_LOGIN", {
+          username: this.username,
+          password: this.password
+        })
+        .then(result => {
+          this.overlay = false;
+          console.log(result);
+        })
+        .catch(err => {
+          this.overlay = false;
+          console.log(err);
+        });
     }
   },
   mounted() {},
@@ -91,45 +158,4 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  /*background: linear-gradient(to bottom, #bbdefb, #1e88e5);*/
-  height: 100%;
-  width: 100%;
-  background-image: url("../assets/image/login/background.png");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  box-sizing: border-box;
-}
-.right {
-  /*width: 100%;*/
-  height: 100%;
-  /*background: #00aebc;*/
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.formContainer {
-  box-sizing: border-box;
-  /*margin: 300px;*/
-  padding: 32px;
-  background: white;
-  width: 610px;
-  height: 440px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /*border-radius: 32px;*/
-  /*border: 1px solid gray;*/
-  /*box-shadow: 0 0 10px gray;*/
-}
-.form_title {
-  color: #00abbe;
-  font-size: 35px;
-  margin-top: 24px;
-  margin-bottom: 24px;
-}
-.form_input_item {
-  display: flex;
-  padding: 0;
-}
 </style>
