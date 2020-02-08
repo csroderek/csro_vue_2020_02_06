@@ -4,16 +4,13 @@ const client_id = "http://csro.net.com";
 
 export default {
   state: {
-    name: "",
-    login: true,
-    token: localStorage.getItem("token") || null,
-    expire: localStorage.getItem("expire") || null,
-    refresh_token: localStorage.getItem("refresh_token") || null
+    username: localStorage.getItem("username") || "",
+    token: localStorage.getItem("token") || "",
+    expire: localStorage.getItem("expire") || "",
+    refresh_token: localStorage.getItem("refresh_token") || ""
   },
   getters: {
-    login: state => {
-      return state.login;
-    }
+    isAuthenticated: state => !!state.token
   },
   actions: {
     async USER_LOGIN({ commit }, user) {
@@ -43,23 +40,35 @@ export default {
               grant_type: "authorization_code"
             })
           );
-          commit("USER_SAVE_TOKEN", { user: user, token: token.data });
+          localStorage.setItem("username", user.username);
+          localStorage.setItem("token", token.data.access_token);
+          localStorage.setItem("expire", token.data.expire);
+          localStorage.setItem("refresh_token", token.data.refresh_token);
+          commit("USER_SAVE_LOGIN_TOKEN", { user: user, token: token.data });
           return Promise.resolve(true);
         }
       } catch (error) {
+        localStorage.removeItem("username");
+        localStorage.removeItem("token");
+        localStorage.removeItem("expire");
+        localStorage.removeItem("refresh_token");
+        console.log(error);
         return Promise.reject(error);
       }
+    },
+
+    USER_TEST() {
+      console.log("HELLO");
     }
   },
   mutations: {
-    USER_SAVE_TOKEN(state, value) {
-      console.log(state);
+    USER_SAVE_LOGIN_TOKEN(state, value) {
       console.log(value);
-      state.name = value.user.username;
-      state.login = true;
+      state.username = value.user.username;
       state.token = value.token.access_token;
-      state.expire = new Date().getTime() + value.token.expires_in * 1000;
+      state.expire = new Date().getTime() + value.token.expires_in * 1870;
       state.refresh_token = value.token.refresh_token;
+      console.log(state);
     }
   }
 };
