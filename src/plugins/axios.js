@@ -2,6 +2,11 @@
 
 import Vue from "vue";
 import axios from "axios";
+import store from "../store";
+import qs from "querystring";
+import router from "../router";
+import createAuthRefreshInterceptor from "axios-auth-refresh";
+import { Promise } from "core-js";
 
 // Full config:  https://github.com/axios/axios#request-config
 axios.defaults.baseURL =
@@ -60,5 +65,31 @@ Plugin.install = function(Vue, options) {
 };
 
 Vue.use(Plugin);
+const refreshAuthLogic = failedRequest =>
+  Vue.axios
+    .post(
+      "auth/token",
+      qs.stringify({
+        client_id: "http://192.168.2.2:8123",
+        refresh_token: store.state.User.refresh_token,
+        grant_type: "refresh_token"
+      })
+    )
+    .then(tokenRefreshResponse => {
+      localStorage.setItem("token", tokenRefreshResponse.data.access_token);
+      store.dispatch("User/USER_REFRESH_TOKEN", {
+        access_token: tokenRefreshResponse.data.access_token
+      });
+      failedRequest.response.config.headers["Authorization"] =
+        "Bearer " + tokenRefreshResponse.data.access_token;
+      return Promise.resolve();
+    })
+    .catch(error => {
+      router.push("/login");
+      console.log(error);
+      return Promise.reject(error);
+    });
+
+createAuthRefreshInterceptor(Vue.axios, refreshAuthLogic);
 
 export default Plugin;

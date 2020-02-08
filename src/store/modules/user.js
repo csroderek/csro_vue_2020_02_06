@@ -1,16 +1,16 @@
 import Vue from "vue";
 import qs from "querystring";
-const client_id = "http://csro.net.com";
+const client_id = "http://192.168.2.2:8123";
 
 export default {
+  namespaced: true,
   state: {
-    username: localStorage.getItem("username") || "",
-    token: localStorage.getItem("token") || "",
-    expire: localStorage.getItem("expire") || "",
+    user_name: localStorage.getItem("user_name") || "",
+    access_token: localStorage.getItem("access_token") || "",
     refresh_token: localStorage.getItem("refresh_token") || ""
   },
   getters: {
-    isAuthenticated: state => !!state.token
+    isRefreshExist: state => !!state.refresh_token
   },
   actions: {
     async USER_LOGIN({ commit }, user) {
@@ -40,35 +40,35 @@ export default {
               grant_type: "authorization_code"
             })
           );
-          localStorage.setItem("username", user.username);
-          localStorage.setItem("token", token.data.access_token);
-          localStorage.setItem("expire", token.data.expire);
+          localStorage.setItem("user_name", user.username);
+          localStorage.setItem("access_token", token.data.access_token);
           localStorage.setItem("refresh_token", token.data.refresh_token);
-          commit("USER_SAVE_LOGIN_TOKEN", { user: user, token: token.data });
+          Vue.axios.defaults.headers.common["Authorization"] =
+            "Bearer " + token.data.access_token;
+          commit("USER_UPDATE_LOGIN_TOKEN", {
+            user: user,
+            token: token.data
+          });
           return Promise.resolve(true);
         }
       } catch (error) {
-        localStorage.removeItem("username");
-        localStorage.removeItem("token");
-        localStorage.removeItem("expire");
-        localStorage.removeItem("refresh_token");
-        console.log(error);
         return Promise.reject(error);
       }
     },
-
-    USER_TEST() {
-      console.log("HELLO");
+    USER_REFRESH_TOKEN({ commit }, value) {
+      Vue.axios.defaults.headers.common["Authorization"] =
+        "Bearer " + value.access_token;
+      commit("USER_UPDATE_REFRESH_TOKEN", value);
     }
   },
   mutations: {
-    USER_SAVE_LOGIN_TOKEN(state, value) {
-      console.log(value);
-      state.username = value.user.username;
-      state.token = value.token.access_token;
-      state.expire = new Date().getTime() + value.token.expires_in * 1870;
+    USER_UPDATE_LOGIN_TOKEN(state, value) {
+      state.user_name = value.user.username;
+      state.access_token = value.token.access_token;
       state.refresh_token = value.token.refresh_token;
-      console.log(state);
+    },
+    USER_UPDATE_REFRESH_TOKEN(state, value) {
+      state.access_token = value.access_token;
     }
   }
 };
