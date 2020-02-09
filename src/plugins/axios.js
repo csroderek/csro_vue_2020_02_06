@@ -5,12 +5,13 @@ import axios from "axios";
 import store from "../store";
 import qs from "querystring";
 import router from "../router";
+import server from "../plugins/server";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import { Promise } from "core-js";
 
 // Full config:  https://github.com/axios/axios#request-config
 axios.defaults.baseURL =
-  process.env.baseURL || process.env.apiUrl || "http://localhost:8080";
+  process.env.baseURL || process.env.apiUrl || server.axios_url;
 //axios.defaults.headers.post["Content-Type"] = "application/json";
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
@@ -65,28 +66,27 @@ Plugin.install = function(Vue, options) {
 };
 
 Vue.use(Plugin);
+
 const refreshAuthLogic = failedRequest =>
   Vue.axios
     .post(
       "auth/token",
       qs.stringify({
-        client_id: "http://192.168.2.2:8123",
+        client_id: server.client_id,
         refresh_token: store.state.User.refresh_token,
         grant_type: "refresh_token"
       })
     )
     .then(tokenRefreshResponse => {
-      localStorage.setItem("token", tokenRefreshResponse.data.access_token);
-      store.dispatch("User/USER_REFRESH_TOKEN", {
-        access_token: tokenRefreshResponse.data.access_token
-      });
+      let token = tokenRefreshResponse.data.access_token;
+      localStorage.setItem("token", token);
+      store.dispatch("User/refresh_token", { access_token: token });
       failedRequest.response.config.headers["Authorization"] =
-        "Bearer " + tokenRefreshResponse.data.access_token;
+        "Bearer " + token;
       return Promise.resolve();
     })
     .catch(error => {
       router.push("/login");
-      console.log(error);
       return Promise.reject(error);
     });
 

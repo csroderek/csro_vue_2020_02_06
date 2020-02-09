@@ -1,6 +1,6 @@
 import Vue from "vue";
 import qs from "querystring";
-const client_id = "http://192.168.2.2:8123";
+import server from "../../plugins/server";
 
 export default {
   namespaced: true,
@@ -10,23 +10,31 @@ export default {
     refresh_token: localStorage.getItem("refresh_token") || ""
   },
   getters: {
-    isRefreshExist: state => !!state.refresh_token
+    user_state: state => state
   },
   actions: {
-    async USER_LOGIN({ commit }, user) {
-      console.log(user);
+    async check_server() {
+      try {
+        let result = await Vue.axios.get("api/", { skipAuthRefresh: true });
+        return Promise.resolve(result);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+
+    async login({ commit }, user) {
       try {
         const flow_id = await Vue.axios.post("auth/login_flow", {
-          client_id: client_id,
+          client_id: server.client_id,
           handler: ["homeassistant", null],
-          redirect_uri: client_id + "?auth_callback=1"
+          redirect_uri: server.client_id + "?auth_callback=1"
         });
         const code = await Vue.axios.post(
           "auth/login_flow/" + flow_id.data.flow_id,
           {
             username: user.username,
             password: user.password,
-            client_id: client_id
+            client_id: server.client_id
           }
         );
         if (code.data.errors != null) {
@@ -35,7 +43,7 @@ export default {
           const token = await Vue.axios.post(
             "auth/token",
             qs.stringify({
-              client_id: client_id,
+              client_id: server.client_id,
               code: code.data.result,
               grant_type: "authorization_code"
             })
@@ -45,7 +53,7 @@ export default {
           localStorage.setItem("refresh_token", token.data.refresh_token);
           Vue.axios.defaults.headers.common["Authorization"] =
             "Bearer " + token.data.access_token;
-          commit("USER_UPDATE_LOGIN_TOKEN", {
+          commit("login_update_token", {
             user: user,
             token: token.data
           });
@@ -55,19 +63,19 @@ export default {
         return Promise.reject(error);
       }
     },
-    USER_REFRESH_TOKEN({ commit }, value) {
+    refresh_token({ commit }, value) {
       Vue.axios.defaults.headers.common["Authorization"] =
         "Bearer " + value.access_token;
-      commit("USER_UPDATE_REFRESH_TOKEN", value);
+      commit("refresh_update_token", value);
     }
   },
   mutations: {
-    USER_UPDATE_LOGIN_TOKEN(state, value) {
+    login_update_token(state, value) {
       state.user_name = value.user.username;
       state.access_token = value.token.access_token;
       state.refresh_token = value.token.refresh_token;
     },
-    USER_UPDATE_REFRESH_TOKEN(state, value) {
+    refresh_update_token(state, value) {
       state.access_token = value.access_token;
     }
   }
