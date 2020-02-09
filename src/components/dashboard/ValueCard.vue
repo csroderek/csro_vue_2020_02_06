@@ -1,6 +1,6 @@
 <template>
   <v-card height="120px">
-    <v-img :src="image" height="100%" class="back_color_a align-center">
+    <v-img :src="image" height="100%" class="align-center" :class="color">
       <v-row class="ma-auto align-self-center">
         <v-col cols="3">
           <v-row justify="center" class="my-3">
@@ -27,7 +27,8 @@ export default {
     icon: String,
     name: String,
     value: String,
-    unit: String
+    unit: String,
+    color: { default: "back_color_b" }
   }
 };
 </script>
