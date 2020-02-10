@@ -1,5 +1,5 @@
 <template>
-  <TopColumn />
+  <TopColumn></TopColumn>
 </template>
 
 <script>
@@ -9,13 +9,12 @@ export default {
   components: {
     TopColumn
   },
-  data() {},
+  data() {
+    return {};
+  },
   methods: {},
   mounted: function() {}
 };
 </script>
 
-<style scoped>
-</style>
-
-
+<style scoped></style>

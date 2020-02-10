@@ -1,5 +1,5 @@
 <template>
-  <v-row class="ml-0">
+  <v-row class="mx-0">
     <v-col v-for="(card, index) in cards" :key="index" cols="12" md="6" lg="4" xl="3">
       <ValueCard
         :image="card.image"
@@ -33,7 +33,7 @@ export default {
         },
         {
           image: require("@/assets/image/cards/dot.png"),
-          icon: "mdi-home-thermometer-outline",
+          icon: "mdi-water-percent",
           name: "湿度",
           value: "56",
           unit: "%",
@@ -41,15 +41,15 @@ export default {
         },
         {
           image: require("@/assets/image/cards/circle.png"),
-          icon: "mdi-home-thermometer-outline",
+          icon: "mdi-hexagon-multiple-outline",
           name: "甲醛",
           value: "0.002",
-          unit: "°C",
+          unit: "mg/m³",
           color: "back_color_c"
         },
         {
           image: require("@/assets/image/cards/line.png"),
-          icon: "mdi-home-thermometer-outline",
+          icon: "mdi-blur",
           name: "PM2.5",
           value: "36",
           unit: "μg/m³",

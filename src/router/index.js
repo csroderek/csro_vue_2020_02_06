@@ -21,26 +21,25 @@ const routes = [
   },
   {
     path: "/",
-    name: "home",
     component: Home,
     meta: {
       requiresUser: true
     },
     children: [
       {
-        path: "/",
+        path: "",
         component: Dashboard
       },
       {
-        path: "/airsystem",
+        path: "airsystem",
         component: Airsystem
       },
       {
-        path: "/weather",
+        path: "weather",
         component: Weather
       },
       {
-        path: "/about",
+        path: "about",
         component: About
       }
     ]

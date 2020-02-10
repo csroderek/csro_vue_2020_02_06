@@ -1,6 +1,6 @@
 <template>
   <v-list two-line>
-    <v-list-item-group v-model="model" color="#00abbe">
+    <v-list-item-group v-model="model" active-class="leftborder" color="#00abbe">
       <v-list-item v-for="(item, i) in items" :key="i" :to="item.path">
         <v-list-item-icon class="my-6">
           <v-icon v-text="item.icon" color="white" />
@@ -53,3 +53,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.leftborder {
+  border-left: 4px solid #00abbe;
+}
+</style>
