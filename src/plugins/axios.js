@@ -80,13 +80,14 @@ const refreshAuthLogic = failedRequest =>
     .then(tokenRefreshResponse => {
       let token = tokenRefreshResponse.data.access_token;
       localStorage.setItem("token", token);
-      store.dispatch("User/refresh_token", { access_token: token });
+      store.commit("User/refresh_update_token", { access_token: token });
       failedRequest.response.config.headers["Authorization"] =
         "Bearer " + token;
+      console.log("success get new token");
       return Promise.resolve();
     })
     .catch(error => {
-      router.push("/login");
+      console.log("error get new token");
       return Promise.reject(error);
     });
 

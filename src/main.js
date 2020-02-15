@@ -5,10 +5,14 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import VueNativeSock from "vue-native-websocket";
+import server from "./plugins/server";
 
-Vue.use(VueNativeSock, "ws://192.168.2.2:8123/api/websocket", {
+Vue.use(VueNativeSock, server.websocket, {
   store: store,
-  format: "json"
+  format: "json",
+  connectManually: false,
+  reconnection: true,
+  reconnectionDelay: 3000
 });
 
 Vue.config.productionTip = false;

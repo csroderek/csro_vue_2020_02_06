@@ -51,26 +51,23 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  let refresh_exist = !!store.getters["User/user_state"].refresh_token;
-  if (to.matched.some(record => record.meta.requiresUser)) {
-    if (refresh_exist !== true) {
-      next({
-        path: "/login"
-      });
-    } else {
-      next();
-    }
-  } else if (to.matched.some(record => record.meta.requiresVisiter)) {
-    if (refresh_exist === true) {
-      next({
-        path: "/"
-      });
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
+  console.log(to);
+  store
+    .dispatch("User/check_token")
+    .then(result => {
+      if (to.matched.some(record => record.meta.requiresVisiter)) {
+        next({ path: "/" });
+      } else {
+        next();
+      }
+    })
+    .catch(error => {
+      if (to.matched.some(record => record.meta.requiresUser)) {
+        next({ path: "/login" });
+      } else {
+        next();
+      }
+    });
 });
 
 export default router;

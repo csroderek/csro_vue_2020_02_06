@@ -8,10 +8,12 @@
 <script>
 export default {
   name: "About",
-
   methods: {
     clear() {
       localStorage.removeItem("refresh_token");
+      localStorage.removeItem("access_token");
+      this.$store.state.User.access_token = "";
+      this.$store.state.User.refresh_token = "";
     }
   },
   computed: {}

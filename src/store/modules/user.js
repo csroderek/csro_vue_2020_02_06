@@ -14,8 +14,21 @@ export default {
   },
   actions: {
     async check_server() {
+      console.log("check_server");
       try {
         let result = await Vue.axios.get("api/", { skipAuthRefresh: true });
+        return Promise.resolve(result);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+
+    async check_token({ state }) {
+      console.log("check_token");
+      Vue.axios.defaults.headers.common["Authorization"] =
+        "Bearer " + state.access_token;
+      try {
+        let result = await Vue.axios.get("api/");
         return Promise.resolve(result);
       } catch (error) {
         return Promise.reject(error);
@@ -51,8 +64,6 @@ export default {
           localStorage.setItem("user_name", user.username);
           localStorage.setItem("access_token", token.data.access_token);
           localStorage.setItem("refresh_token", token.data.refresh_token);
-          Vue.axios.defaults.headers.common["Authorization"] =
-            "Bearer " + token.data.access_token;
           commit("login_update_token", {
             user: user,
             token: token.data
@@ -62,11 +73,6 @@ export default {
       } catch (error) {
         return Promise.reject(error);
       }
-    },
-    refresh_token({ commit }, value) {
-      Vue.axios.defaults.headers.common["Authorization"] =
-        "Bearer " + value.access_token;
-      commit("refresh_update_token", value);
     }
   },
   mutations: {
@@ -74,9 +80,13 @@ export default {
       state.user_name = value.user.username;
       state.access_token = value.token.access_token;
       state.refresh_token = value.token.refresh_token;
+      Vue.axios.defaults.headers.common["Authorization"] =
+        "Bearer " + value.token.access_token;
     },
     refresh_update_token(state, value) {
       state.access_token = value.access_token;
+      Vue.axios.defaults.headers.common["Authorization"] =
+        "Bearer " + value.access_token;
     }
   }
 };

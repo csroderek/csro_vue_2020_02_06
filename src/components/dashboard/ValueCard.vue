@@ -6,12 +6,14 @@
           <v-row justify="center" class="my-3">
             <v-icon v-text="icon" color="white" large></v-icon>
           </v-row>
-          <v-row justify="center" class="white--text">{{name}}</v-row>
+          <v-row justify="center" class="white--text">{{ name }}</v-row>
         </v-col>
         <v-col cols="6" align-self="center">
           <v-row justify="center" class="display-1 white--text">
-            {{value}}
-            <span class="blue--text text--lighten-5 mb-n1 title ma-2">{{unit}}</span>
+            {{ value }}
+            <span class="blue--text text--lighten-5 mb-n1 title ma-2">{{
+              unit
+            }}</span>
           </v-row>
         </v-col>
         <v-col cols="3"></v-col>
