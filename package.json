@@ -48,7 +48,7 @@
       "no-console": "off",
       "max-len": [
         2,
-        120,
+        160,
         4,
         {
           "ignoreUrls": true

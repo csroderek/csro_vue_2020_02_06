@@ -3,11 +3,45 @@ import Vue from "vue";
 export default {
   namespaced: true,
   state: {
-    entities: []
+    entities: [],
+    clock: {
+      year: Number,
+      month: Number,
+      day: Number,
+      hour: Number,
+      minute: Number,
+      second: Number
+    }
   },
-  getters: {},
+  getters: {
+    clock(state) {
+      let date =
+        state.clock.year.toString() +
+        "-" +
+        state.clock.month.toString().padStart(2, "0") +
+        "-" +
+        state.clock.day.toString().padStart(2, "0");
+
+      let time =
+        state.clock.hour.toString() +
+        ":" +
+        state.clock.minute.toString().padStart(2, "0") +
+        ":" +
+        state.clock.second.toString().padStart(2, "0");
+      return date + " " + time;
+    }
+  },
   actions: {},
   mutations: {
+    clock_update(state) {
+      let now = new Date();
+      state.clock.year = now.getFullYear();
+      state.clock.month = now.getMonth() + 1;
+      state.clock.day = now.getDate();
+      state.clock.hour = now.getHours();
+      state.clock.minute = now.getMinutes();
+      state.clock.second = now.getSeconds();
+    },
     entities_init(state, value) {
       state.entities = value;
     },

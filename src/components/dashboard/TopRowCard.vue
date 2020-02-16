@@ -1,5 +1,5 @@
 <template>
-  <v-card height="120px">
+  <v-card :height="cardheight">
     <v-img :src="image" height="100%" class="align-center" :class="color">
       <v-row class="ma-auto align-self-center">
         <v-col cols="3">
@@ -11,9 +11,11 @@
         <v-col cols="6" align-self="center">
           <v-row justify="center" class="display-1 white--text">
             {{ value }}
-            <span class="blue--text text--lighten-5 mb-n1 title ma-2">{{
+            <span class="title ml-2 mt-2" style="opacity:0.7">
+              {{
               unit
-            }}</span>
+              }}
+            </span>
           </v-row>
         </v-col>
         <v-col cols="3"></v-col>
@@ -23,6 +25,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   props: {
     image: String,
@@ -31,6 +34,11 @@ export default {
     value: String,
     unit: String,
     color: { default: "back_color_b" }
+  },
+  computed: {
+    ...mapState({
+      cardheight: state => state.rowheight.top
+    })
   }
 };
 </script>

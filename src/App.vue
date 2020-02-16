@@ -8,6 +8,11 @@
 export default {
   name: "App",
   components: {},
-  data: () => ({})
+  data: () => ({}),
+  created() {
+    setInterval(() => {
+      this.$store.commit("Global/clock_update");
+    }, 1000);
+  }
 };
 </script>

@@ -18,6 +18,11 @@ export default new Vuex.Store({
       message: "",
       reconnectError: false,
       socket_init: false
+    },
+    rowheight: {
+      top: 120,
+      mid: 320,
+      btm: 320
     }
   },
 
