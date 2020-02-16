@@ -1,5 +1,5 @@
 <template>
-  <v-card :height="cardheight" style="overflow:hidden" class="py-3">
+  <v-card :height="cardheight" class="scroll_bar">
     <v-list rounded>
       <v-list-item-group v-model="lights" color="primary">
         <v-list-item
@@ -49,5 +49,13 @@ export default {
 <style scoped>
 .back_color {
   background: -webkit-linear-gradient(top right, #4da7ff, #45c2ff);
+}
+
+.scroll_bar {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.scroll_bar::-webkit-scrollbar {
+  display: none;
 }
 </style>

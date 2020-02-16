@@ -17,10 +17,10 @@
         forecast.condition[0].toUpperCase()
       )
     }}</v-row>
-    <v-row justify="center" class="caption grey--text font-weight-light">{{
+    <v-row justify="center" class="caption grey--text">{{
       forecast.temperature + " °C"
     }}</v-row>
-    <v-row justify="center" class="caption grey--text font-weight-light">{{
+    <v-row justify="center" class="caption grey--text">{{
       forecast.wind_speed + " km/h"
     }}</v-row>
   </div>

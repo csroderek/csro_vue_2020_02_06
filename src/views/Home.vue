@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" app clipped color="#46526b">
       <LeftDrawer />
     </v-navigation-drawer>
-    <v-app-bar app clipped-left dense height="35px">
+    <v-app-bar app clipped-left dense height="40px">
       <v-app-bar-nav-icon
         style="color: #00aebc"
         @click.stop="drawer = !drawer"
