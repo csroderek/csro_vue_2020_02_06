@@ -1,4 +1,5 @@
 import Vue from "vue";
+import store from "..";
 
 export default {
   namespaced: true,
@@ -31,7 +32,13 @@ export default {
       return date + " " + time;
     }
   },
-  actions: {},
+  actions: {
+    socket_send({ state, commit }, data_obj) {
+      data_obj.id = store.state.socket.socket_id;
+      Vue.prototype.$socket.sendObj(data_obj);
+      store.commit("SOCKET_ADD_MESSAGE_ID");
+    }
+  },
   mutations: {
     clock_update(state) {
       let now = new Date();
@@ -46,7 +53,7 @@ export default {
       state.entities = value;
     },
     entities_update(state, value) {
-      console.log(value);
+      // console.log(value);
       const result = state.entities.filter(entity => {
         return entity.entity_id == value.entity_id;
       });

@@ -17,7 +17,8 @@ export default new Vuex.Store({
       isConnected: false,
       message: "",
       reconnectError: false,
-      socket_init: false
+      socket_init: false,
+      socket_id: 10
     },
     rowheight: {
       top: 120,
@@ -74,6 +75,10 @@ export default new Vuex.Store({
     },
     SOCKET_RECONNECT_ERROR(state) {
       state.socket.reconnectError = true;
+    },
+    SOCKET_ADD_MESSAGE_ID(state) {
+      state.socket.socket_id += 1;
+      console.log(state.socket.socket_id);
     }
   }
 });
