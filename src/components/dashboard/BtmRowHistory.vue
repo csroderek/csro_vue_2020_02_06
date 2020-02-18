@@ -1,10 +1,6 @@
 <template>
   <v-card :height="cardheight">
-    <apexchart
-      :options="chartOptions"
-      :series="series"
-      class="pa-3"
-    ></apexchart>
+    <apexchart :options="chartOptions" :series="series" class="pa-3" height="300px"></apexchart>
   </v-card>
 </template>
 
@@ -15,7 +11,7 @@ export default {
   data: function() {
     return {
       chartOptions: {
-        grid: { show: false },
+        grid: { show: true },
         chart: {
           width: "200px",
           height: "100px",
