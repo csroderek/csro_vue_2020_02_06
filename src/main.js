@@ -6,6 +6,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import VueNativeSock from "vue-native-websocket";
 import server from "./plugins/server";
+import VueApexCharts from "vue-apexcharts";
 
 Vue.use(VueNativeSock, server.websocket, {
   store: store,
@@ -14,6 +15,10 @@ Vue.use(VueNativeSock, server.websocket, {
   reconnection: true,
   reconnectionDelay: 2000
 });
+
+Vue.use(VueApexCharts);
+
+Vue.component("apexchart", VueApexCharts);
 
 Vue.config.productionTip = false;
 
