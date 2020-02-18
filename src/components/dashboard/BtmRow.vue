@@ -1,29 +1,29 @@
 <template>
   <v-row class="mx-0" dense>
-    <v-col cols="12" md="12" lg="4" xl="4">
-      <BtmRowMap></BtmRowMap>
+    <v-col v-if="location != null" cols="12" md="12" lg="4" xl="4">
+      <BtmRowMap :loc="location"></BtmRowMap>
     </v-col>
     <v-col cols="12" md="12" lg="4" xl="4">
-      <MidRowWeather></MidRowWeather>
+      <BtmRowHistory :loc="location"></BtmRowHistory>
     </v-col>
     <v-col cols="6" md="6" lg="2" xl="2">
-      <MidRowWeather></MidRowWeather>
+      <BtmRowHistory></BtmRowHistory>
     </v-col>
     <v-col cols="6" md="6" lg="2" xl="2">
-      <MidRowWeather></MidRowWeather>
+      <BtmRowHistory></BtmRowHistory>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import MidRowWeather from "@/components/dashboard/MidRowWeather";
 import BtmRowMap from "@/components/dashboard/BtmRowMap";
+import BtmRowHistory from "@/components/dashboard/BtmRowHistory";
 import { mapState } from "vuex";
 export default {
   name: "Dashboard",
   components: {
-    MidRowWeather,
-    BtmRowMap
+    BtmRowMap,
+    BtmRowHistory
   },
   data() {
     return {};
@@ -31,13 +31,24 @@ export default {
 
   computed: {
     ...mapState({
-      entities: state => state.Global.entities
-    })
+      entities: state => state.Global.entities,
+      history: state => state.Aqi.history
+    }),
+    location() {
+      if (this.entities.length == 0) return null;
+      const res = this.entities.filter(entity => {
+        return entity.entity_id.indexOf("zone.") != -1;
+      });
+      return res.length > 0
+        ? { lon: res[0].attributes.longitude, lat: res[0].attributes.latitude }
+        : null;
+    },
+    history_data() {
+      return null;
+    }
   },
   methods: {},
-  mounted: function() {
-    console.log(this.entities);
-  }
+  mounted: function() {}
 };
 </script>
 

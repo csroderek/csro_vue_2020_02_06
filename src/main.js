@@ -12,7 +12,7 @@ Vue.use(VueNativeSock, server.websocket, {
   format: "json",
   connectManually: false,
   reconnection: true,
-  reconnectionDelay: 50
+  reconnectionDelay: 2000
 });
 
 Vue.config.productionTip = false;

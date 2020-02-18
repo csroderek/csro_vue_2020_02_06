@@ -15,7 +15,7 @@
       <v-icon color="#00aebc" class="mr-4">mdi-clock-outline</v-icon>
       <span class="hidden-sm-and-down">{{ clock }}</span>
     </v-app-bar>
-    <v-content>
+    <v-content v-if="entities.length > 0">
       <router-view />
     </v-content>
     <v-footer app class="justify-center" height="30px">
@@ -27,7 +27,7 @@
 <script>
 import misc from "../misc/misc";
 import LeftDrawer from "../components/LeftDrawer";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 export default {
   components: { LeftDrawer },
   name: "Home",
@@ -35,12 +35,18 @@ export default {
     drawer: true,
     datetime: null
   }),
-  methods: {},
+  methods: {
+    ...mapActions({})
+  },
   computed: {
     ...mapGetters({
       clock: "Global/clock"
+    }),
+    ...mapState({
+      entities: state => state.Global.entities
     })
-  }
+  },
+  mounted() {}
 };
 </script>
 

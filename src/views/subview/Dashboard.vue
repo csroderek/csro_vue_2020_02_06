@@ -10,6 +10,7 @@
 import TopRow from "@/components/dashboard/TopRow";
 import MidRow from "@/components/dashboard/MidRow";
 import BtmRow from "@/components/dashboard/BtmRow";
+import { mapGetters, mapState, mapActions } from "vuex";
 export default {
   name: "Dashboard",
   components: {
@@ -20,8 +21,15 @@ export default {
   data() {
     return {};
   },
-  methods: {},
-  mounted: function() {}
+  methods: {
+    ...mapActions({
+      history: "Aqi/get_aqi_history"
+    })
+  },
+  computed: {},
+  mounted() {
+    this.history();
+  }
 };
 </script>
 

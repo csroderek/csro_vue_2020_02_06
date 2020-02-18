@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import User from "./modules/user";
 import Home from "./modules/home";
 import Global from "./modules/global";
+import Aqi from "./modules/aqi";
 
 Vue.use(Vuex);
 
@@ -10,7 +11,8 @@ export default new Vuex.Store({
   modules: {
     User,
     Home,
-    Global
+    Global,
+    Aqi
   },
   state: {
     socket: {

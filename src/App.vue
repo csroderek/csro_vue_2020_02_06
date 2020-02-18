@@ -10,6 +10,7 @@ export default {
   components: {},
   data: () => ({}),
   created() {
+    this.$store.commit("Global/clock_update");
     setInterval(() => {
       this.$store.commit("Global/clock_update");
     }, 1000);

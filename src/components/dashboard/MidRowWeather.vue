@@ -20,26 +20,28 @@
         </v-row>
       </v-col>
       <v-col cols="7" class="pa-0" style="height:100%">
-        <v-row justify="center" class="white--text title font-weight-light">{{
+        <v-row justify="center" class="white--text title font-weight-light">
+          {{
           clock.month + "月" + clock.day + "日"
-        }}</v-row>
-        <v-row justify="center" class="my-1 white--text display-1">{{
+          }}
+        </v-row>
+        <v-row justify="center" class="my-1 white--text display-1">
+          {{
           weather
-        }}</v-row>
-        <v-row justify="center" class="white--text subtitle-1"
-          >风速 {{ windspeed }} km/h</v-row
-        >
+          }}
+        </v-row>
+        <v-row justify="center" class="white--text subtitle-1">风速 {{ windspeed }} km/h</v-row>
       </v-col>
     </v-row>
     <v-row v-if="forecasts.length >= 3" style="height:60%" class="ma-0 py-1">
       <v-col cols="4" align-self="center">
         <MidRowWeatherForecast :forecast="forecasts[0]"></MidRowWeatherForecast>
       </v-col>
-      <v-divider vertical="" />
+      <v-divider vertical />
       <v-col cols="4" class="mx-n1" align-self="center">
         <MidRowWeatherForecast :forecast="forecasts[1]"></MidRowWeatherForecast>
       </v-col>
-      <v-divider vertical="" />
+      <v-divider vertical />
       <v-col cols="4" align-self="center">
         <MidRowWeatherForecast :forecast="forecasts[2]"></MidRowWeatherForecast>
       </v-col>
@@ -59,13 +61,13 @@ export default {
       clock: state => state.Global.clock
     }),
     weather() {
-      if (this.entities.length == 0) return "N/A";
+      if (this.entities.length == 0) return null;
       const res = this.entities.filter(entity => {
         return entity.entity_id.indexOf("weather") != -1;
       });
       return res.length > 0
         ? res[0].state.replace(res[0].state[0], res[0].state[0].toUpperCase())
-        : "N/A";
+        : null;
     },
     weathericon() {
       if (this.entities.length == 0) return "mdi-weather-cloudy";
@@ -77,25 +79,25 @@ export default {
         : "mdi-weather-cloudy";
     },
     temp() {
-      if (this.entities.length == 0) return "N/A";
+      if (this.entities.length == 0) return null;
       const res = this.entities.filter(entity => {
         return entity.entity_id.indexOf("weather") != -1;
       });
-      return res.length > 0 ? res[0].attributes.temperature : "N/A";
+      return res.length > 0 ? res[0].attributes.temperature : null;
     },
     humi() {
-      if (this.entities.length == 0) return "N/A";
+      if (this.entities.length == 0) return null;
       const res = this.entities.filter(entity => {
         return entity.entity_id.indexOf("weather") != -1;
       });
-      return res.length > 0 ? res[0].attributes.humidity : "N/A";
+      return res.length > 0 ? res[0].attributes.humidity : null;
     },
     windspeed() {
-      if (this.entities.length == 0) return "N/A";
+      if (this.entities.length == 0) return null;
       const res = this.entities.filter(entity => {
         return entity.entity_id.indexOf("weather") != -1;
       });
-      return res.length > 0 ? res[0].attributes.wind_speed : "N/A";
+      return res.length > 0 ? res[0].attributes.wind_speed : null;
     },
     forecasts() {
       if (this.entities.length == 0) return [];

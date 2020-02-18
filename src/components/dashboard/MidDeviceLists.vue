@@ -18,6 +18,7 @@
             <template v-for="(light, index) in lights">
               <v-divider v-if="index!=0" :key="index" inset></v-divider>
               <v-list-item
+                :ripple="false"
                 :key="light.attributes.friendly_name"
                 style="height:55px !important"
                 @click.stop="details"

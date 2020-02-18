@@ -41,9 +41,7 @@ export default {
     })
   },
   methods: {},
-  mounted: function() {
-    console.log(this.entities);
-  }
+  mounted: function() {}
 };
 </script>
 

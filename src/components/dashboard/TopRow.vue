@@ -61,50 +61,48 @@ export default {
       entities: state => state.Global.entities
     }),
     temp() {
-      if (this.entities.length == 0) return "N/A";
+      if (this.entities.length == 0) return null;
       const res = this.entities.filter(entity => {
         return (
           entity.entity_id.indexOf("csro") != -1 &&
           entity.entity_id.indexOf("temp") != -1
         );
       });
-      return res.length > 0 ? res[0].state : "N/A";
+      return res.length > 0 ? res[0].state : null;
     },
     humi() {
-      if (this.entities.length == 0) return "N/A";
+      if (this.entities.length == 0) return null;
       const res = this.entities.filter(entity => {
         return (
           entity.entity_id.indexOf("csro") != -1 &&
           entity.entity_id.indexOf("humi") != -1
         );
       });
-      return res.length > 0 ? res[0].state : "N/A";
+      return res.length > 0 ? res[0].state : null;
     },
     hcho() {
-      if (this.entities.length == 0) return "N/A";
+      if (this.entities.length == 0) return null;
       const res = this.entities.filter(entity => {
         return (
           entity.entity_id.indexOf("csro") != -1 &&
           entity.entity_id.indexOf("hcho") != -1
         );
       });
-      return res.length > 0 ? res[0].state : "N/A";
+      return res.length > 0 ? res[0].state : null;
     },
     pm2d5() {
-      if (this.entities.length == 0) return "N/A";
+      if (this.entities.length == 0) return null;
       const res = this.entities.filter(entity => {
         return (
           entity.entity_id.indexOf("csro") != -1 &&
           entity.entity_id.indexOf("pm2d5") != -1
         );
       });
-      return res.length > 0 ? res[0].state : "N/A";
+      return res.length > 0 ? res[0].state : null;
     }
   },
   methods: {},
-  mounted: function() {
-    console.log(this.entities);
-  }
+  mounted: function() {}
 };
 </script>
 
