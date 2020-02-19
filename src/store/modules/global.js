@@ -30,6 +30,37 @@ export default {
         ":" +
         state.clock.second.toString().padStart(2, "0");
       return date + " " + time;
+    },
+    scenes(state) {
+      return state.entities.filter(entity => {
+        return entity.entity_id.indexOf("scene.") != -1;
+      });
+    },
+    lights(state) {
+      return state.entities.filter(entity => {
+        return entity.entity_id.indexOf("light.") != -1;
+      });
+    },
+    covers(state) {
+      return state.entities.filter(entity => {
+        return entity.entity_id.indexOf("cover.") != -1;
+      });
+    },
+    weather(state) {
+      return state.entities.filter(entity => {
+        return entity.entity_id.indexOf("weather.") != -1;
+      });
+    },
+    aqis(state) {
+      return state.entities.filter(entity => {
+        return (
+          entity.entity_id.indexOf("csro") != -1 &&
+          (entity.entity_id.indexOf("temp") != -1 ||
+            entity.entity_id.indexOf("humi") != -1 ||
+            entity.entity_id.indexOf("hcho") != -1 ||
+            entity.entity_id.indexOf("pm") != -1)
+        );
+      });
     }
   },
   actions: {

@@ -15,7 +15,7 @@
 
 <script>
 import TopRowCard from "@/components/dashboard/TopRowCard";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "Dashboard",
   components: {
@@ -57,46 +57,34 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      entities: state => state.Global.entities
+    ...mapGetters({
+      aqis: "Global/aqis"
     }),
     temp() {
-      if (this.entities.length == 0) return null;
-      const res = this.entities.filter(entity => {
-        return (
-          entity.entity_id.indexOf("csro") != -1 &&
-          entity.entity_id.indexOf("temp") != -1
-        );
+      if (this.aqis.length == 0) return null;
+      const res = this.aqis.filter(entity => {
+        return entity.entity_id.indexOf("temp") != -1;
       });
       return res.length > 0 ? res[0].state : null;
     },
     humi() {
-      if (this.entities.length == 0) return null;
-      const res = this.entities.filter(entity => {
-        return (
-          entity.entity_id.indexOf("csro") != -1 &&
-          entity.entity_id.indexOf("humi") != -1
-        );
+      if (this.aqis.length == 0) return null;
+      const res = this.aqis.filter(entity => {
+        return entity.entity_id.indexOf("humi") != -1;
       });
       return res.length > 0 ? res[0].state : null;
     },
     hcho() {
-      if (this.entities.length == 0) return null;
-      const res = this.entities.filter(entity => {
-        return (
-          entity.entity_id.indexOf("csro") != -1 &&
-          entity.entity_id.indexOf("hcho") != -1
-        );
+      if (this.aqis.length == 0) return null;
+      const res = this.aqis.filter(entity => {
+        return entity.entity_id.indexOf("hcho") != -1;
       });
       return res.length > 0 ? res[0].state : null;
     },
     pm2d5() {
-      if (this.entities.length == 0) return null;
-      const res = this.entities.filter(entity => {
-        return (
-          entity.entity_id.indexOf("csro") != -1 &&
-          entity.entity_id.indexOf("pm2d5") != -1
-        );
+      if (this.aqis.length == 0) return null;
+      const res = this.aqis.filter(entity => {
+        return entity.entity_id.indexOf("pm2d5") != -1;
       });
       return res.length > 0 ? res[0].state : null;
     }

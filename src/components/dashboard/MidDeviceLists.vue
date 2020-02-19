@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -105,23 +105,12 @@ export default {
   },
   computed: {
     ...mapState({
-      cardheight: state => state.rowheight.mid,
-      entities: state => state.Global.entities
+      cardheight: state => state.rowheight.mid
     }),
-    lights() {
-      if (this.entities.length == 0) return [];
-      const res = this.entities.filter(entity => {
-        return entity.entity_id.indexOf("light.") != -1;
-      });
-      return res.length > 0 ? res : [];
-    },
-    covers() {
-      if (this.entities.length == 0) return [];
-      const res = this.entities.filter(entity => {
-        return entity.entity_id.indexOf("cover.") != -1;
-      });
-      return res.length > 0 ? res : [];
-    }
+    ...mapGetters({
+      lights: "Global/lights",
+      covers: "Global/covers"
+    })
   },
   methods: {
     switch_light(id, state) {

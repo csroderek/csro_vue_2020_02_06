@@ -17,6 +17,14 @@ export default {
   getters: {},
   actions: {
     async get_aqi_history({ commit }) {
+      console.log(moment());
+      console.log(moment().format());
+      console.log(
+        moment()
+          .subtract(12, "hours")
+          .utc()
+          .format()
+      );
       const aqi_entity = store.state.Global.entities.filter(entity => {
         return (
           entity.entity_id.indexOf("csro") != -1 &&
@@ -28,7 +36,7 @@ export default {
           const history = await Vue.axios.get(
             "api/history/period/" +
               moment()
-                .subtract(1, "hours")
+                .subtract(12, "hours")
                 .utc()
                 .format(),
             {
@@ -60,13 +68,24 @@ export default {
   },
   mutations: {
     update_history(state, data) {
-      console.log("update history", data);
-      state.temp = data[0];
-      state.humi = data[1];
-      state.hcho = data[2];
-      state.pm1 = data[3];
-      state.pm2d5 = data[4];
-      state.pm10 = data[5];
+      state.history.temp = data[0].map(point => {
+        return [moment(point.last_changed).valueOf(), parseFloat(point.state)];
+      });
+      state.history.humi = data[1].map(point => {
+        return [moment(point.last_changed).valueOf(), parseFloat(point.state)];
+      });
+      state.history.hcho = data[2].map(point => {
+        return [moment(point.last_changed).valueOf(), parseFloat(point.state)];
+      });
+      state.history.pm1 = data[3].map(point => {
+        return [moment(point.last_changed).valueOf(), parseFloat(point.state)];
+      });
+      state.history.pm2d5 = data[4].map(point => {
+        return [moment(point.last_changed).valueOf(), parseFloat(point.state)];
+      });
+      state.history.pm10 = data[5].map(point => {
+        return [moment(point.last_changed).valueOf(), parseFloat(point.state)];
+      });
     }
   }
 };

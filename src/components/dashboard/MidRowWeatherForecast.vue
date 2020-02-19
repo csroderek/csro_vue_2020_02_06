@@ -1,34 +1,43 @@
 <template>
   <div>
-    <v-row justify="center" class="subtitle-1 font-weight-light">{{
+    <v-row justify="center" class="subtitle-1 font-weight-light">
+      {{
       parseInt(forecast.datetime.slice(5, 7)).toString() +
-        "月" +
-        parseInt(forecast.datetime.slice(8, 10)).toString() +
-        "日"
-    }}</v-row>
-    <v-row justify="center">
-      <v-icon x-large color="blue">{{
-        "mdi-weather-" + forecast.condition
-      }}</v-icon>
+      "月" +
+      parseInt(forecast.datetime.slice(8, 10)).toString() +
+      "日"
+      }}
     </v-row>
-    <v-row justify="center">{{
-      forecast.condition.replace(
-        forecast.condition[0],
-        forecast.condition[0].toUpperCase()
-      )
-    }}</v-row>
-    <v-row justify="center" class="caption grey--text">{{
+    <v-row justify="center">
+      <v-icon x-large v-text="parseWeather.icon.mdi" :color="parseWeather.icon.color"></v-icon>
+    </v-row>
+    <v-row justify="center" class="subtitle-2">
+      {{
+      parseWeather.name
+      }}
+    </v-row>
+    <v-row justify="center" class="caption grey--text">
+      {{
       forecast.temperature + " °C"
-    }}</v-row>
-    <v-row justify="center" class="caption grey--text">{{
+      }}
+    </v-row>
+    <v-row justify="center" class="caption grey--text">
+      {{
       forecast.wind_speed + " km/h"
-    }}</v-row>
+      }}
+    </v-row>
   </div>
 </template>
 
 <script>
+import Misc from "@/misc/misc";
 export default {
-  props: { forecast: Object }
+  props: { forecast: Object },
+  computed: {
+    parseWeather() {
+      return Misc.translate_weather(this.forecast.condition);
+    }
+  }
 };
 </script>
 

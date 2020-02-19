@@ -23,7 +23,6 @@
 import MidRowWeather from "@/components/dashboard/MidRowWeather";
 import MidRowScenes from "@/components/dashboard/MidRowScenes";
 import MidDeviceLists from "@/components/dashboard/MidDeviceLists";
-import { mapState } from "vuex";
 export default {
   name: "Dashboard",
   components: {
@@ -35,11 +34,7 @@ export default {
     return {};
   },
 
-  computed: {
-    ...mapState({
-      entities: state => state.Global.entities
-    })
-  },
+  computed: {},
   methods: {},
   mounted: function() {}
 };
