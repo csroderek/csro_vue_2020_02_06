@@ -32,7 +32,7 @@ export default {
       mdi = "mdi-weather-lightning-rainy";
       color = "yellow";
     } else if (weather == "partlycloudy") {
-      name = "局部多云";
+      name = "多云";
       mdi = "mdi-weather-partly-cloudy";
       color = "yellow";
     } else if (weather == "pouring") {

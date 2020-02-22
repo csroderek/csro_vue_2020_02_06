@@ -7,10 +7,10 @@
       <BtmRowHistory :loc="location"></BtmRowHistory>
     </v-col>
     <v-col cols="6" md="6" lg="2" xl="2">
-      <BtmRowHistory></BtmRowHistory>
+      <BtmRowDeviceCount></BtmRowDeviceCount>
     </v-col>
     <v-col cols="6" md="6" lg="2" xl="2">
-      <BtmRowHistory></BtmRowHistory>
+      <BtmRowTimeline></BtmRowTimeline>
     </v-col>
   </v-row>
 </template>
@@ -18,12 +18,16 @@
 <script>
 import BtmRowMap from "@/components/dashboard/BtmRowMap";
 import BtmRowHistory from "@/components/dashboard/BtmRowHistory";
+import BtmRowDeviceCount from "@/components/dashboard/BtmRowDeviceCount";
+import BtmRowTimeline from "@/components/dashboard/BtmRowTimeline";
 import { mapState } from "vuex";
 export default {
   name: "Dashboard",
   components: {
     BtmRowMap,
-    BtmRowHistory
+    BtmRowHistory,
+    BtmRowDeviceCount,
+    BtmRowTimeline
   },
   data() {
     return {};

@@ -17,14 +17,6 @@ export default {
   getters: {},
   actions: {
     async get_aqi_history({ commit }) {
-      console.log(moment());
-      console.log(moment().format());
-      console.log(
-        moment()
-          .subtract(12, "hours")
-          .utc()
-          .format()
-      );
       const aqi_entity = store.state.Global.entities.filter(entity => {
         return (
           entity.entity_id.indexOf("csro") != -1 &&

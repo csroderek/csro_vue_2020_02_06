@@ -80,27 +80,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      tab: null,
-      items: [
-        {
-          icon: "folder",
-          iconClass: "grey lighten-1 white--text",
-          title: "Photos",
-          subtitle: "Jan 9, 2014"
-        },
-        {
-          icon: "folder",
-          iconClass: "grey lighten-1 white--text",
-          title: "Recipes",
-          subtitle: "Jan 17, 2014"
-        },
-        {
-          icon: "folder",
-          iconClass: "grey lighten-1 white--text",
-          title: "Work",
-          subtitle: "Jan 28, 2014"
-        }
-      ]
+      tab: null
     };
   },
   computed: {

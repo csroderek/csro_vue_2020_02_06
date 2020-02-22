@@ -51,6 +51,16 @@ export default {
         return entity.entity_id.indexOf("weather.") != -1;
       });
     },
+    sensors(state) {
+      return state.entities.filter(entity => {
+        return entity.entity_id.indexOf("sensor.") != -1;
+      });
+    },
+    climates(state) {
+      return state.entities.filter(entity => {
+        return entity.entity_id.indexOf("climate.") != -1;
+      });
+    },
     aqis(state) {
       return state.entities.filter(entity => {
         return (
@@ -84,7 +94,6 @@ export default {
       state.entities = value;
     },
     entities_update(state, value) {
-      // console.log(value);
       const result = state.entities.filter(entity => {
         return entity.entity_id == value.entity_id;
       });
